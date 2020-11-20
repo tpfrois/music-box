@@ -89,10 +89,16 @@ public class Musicas {
 
     public Musica buscar(String nome, String artista){
         Musica mus = new Musica();
-        mus.setNome(nome);
-        mus.setArtista(artista);
 
+        String nomeLimpo = nome.toLowerCase();
+        String artistaLimpo = artista.toLowerCase();
 
+        for(Musica m : this.getMusicas()){
+           if(nomeLimpo.equals(m.getNome().toLowerCase()) && artistaLimpo.equals(m.getArtista().toLowerCase())){
+               mus = m;
+               break;
+           }
+        }
 
         return mus;
     }

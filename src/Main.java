@@ -1,21 +1,25 @@
+import com.sun.deploy.net.MessageHeader;
+
 import java.util.*;
 import java.io.IOException;
 import javax.xml.bind.JAXBException;
 
 public class Main {
-    
+
+    public static Queue<Musica> filaMusicas = new LinkedList<>();
+
     public static void main(String[] args) throws JAXBException, IOException {
         Scanner leitor = new Scanner(System.in);
+
         Musicas musicas = XML.carregar();
 
-        Queue<Musica> filaMusicas = new LinkedList<>();
         int opcao;
         do{
             System.out.println("\n+===============================+");
             System.out.println("|             MUSIC BOX         |");
             System.out.println("+===============================+");
             System.out.println("|-------------TOCAR-------------|");
-            System.out.println("| 1 - Adicionar música pra tocar|");
+            System.out.println("| 1 - Adicionar música na fila  |");
             System.out.println("| 2 - Listar Fila de músicas    |");
             System.out.println("|------------CADASTRO-----------|");
             System.out.println("| 3 - Cadastrar música          |");
@@ -30,10 +34,10 @@ public class Main {
 
             switch(opcao) {
                 case 1:
-                    adicionarFila();
+                    adicionarFila(musicas);
                     break;
                 case 2:
-                    listarFila(filaMusicas);
+                    listarFila();
                     break;
                 case 3:
                     musicas.cadastrar();
@@ -50,17 +54,43 @@ public class Main {
         } while(opcao != 0);
     }
 
-    static void adicionarFila(){
-        /* TODO: MÉTODO PARA ADICIONAR A FILA
-         DEVERA PERGUNTAR QUAL MÚSICA
-         BUSCAR - PELO NOME E ARTISTA
-                - PELO ID
-         */
+     public static void adicionarFila(Musicas musicas){
+        Scanner S = new Scanner(System.in);
+
+        System.out.println("\nAdicionar música na fila para tocar");
+
+        System.out.print("\nNome da Música: ");
+        String nome = S.nextLine();
+        System.out.print("Nome do Artista: ");
+        String artista = S.nextLine();
+
+        Musica m = musicas.buscar(nome, artista);
+
+        if(m.getNome() == null) {
+            System.out.println("\nMúsica não encontrada! Pressione uma tecla para continuar...");
+            S.nextLine();
+            return;
+        } else {
+            filaMusicas.add(m);
+            System.out.println("\nMúsica adicionada: ");
+            System.out.printf("\n%1$s - %2$s - %3$s", m.getNome(), m.getArtista(), m.getDuracao());
+            System.out.print("\nPressione uma tecla para continuar...");
+            S.nextLine();
+        }
     }
 
-    static void listarFila(Queue<Musica> q){
-        for(Musica m : q){
-            System.out.println(m.getNome() + " - " + m.getArtista());
+    public static void listarFila(){
+        Scanner S = new Scanner(System.in);
+        if(filaMusicas.size() == 0){
+            System.out.print("\nA fila está vazia! Pressione uma tecla para continuar...");
+            S.nextLine();
+        } else {
+            System.out.println("\nFILA DAS MÚSICAS À TOCAR:");
+            for(Musica m : filaMusicas){
+                System.out.println(m.getNome() + " - " + m.getArtista());
+            }
+            System.out.print("\nPressione uma tecla para continuar...");
+            S.nextLine();
         }
     }
 
