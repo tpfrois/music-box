@@ -30,17 +30,16 @@ public class Main {
 
             switch(opcao) {
                 case 1:
-                    Musica e = new Musica("oi", "ola", "tudo", "bem", "?");
-                    filaMusicas.add(e);
+                    adicionarFila();
                     break;
                 case 2:
                     listarFila(filaMusicas);
                     break;
                 case 3:
-                    musicas.cadastrar(musicas);
+                    musicas.cadastrar();
                     break;
                 case 4:
-                    musicas.listar(musicas);
+                    musicas.listar();
                     break;
                 case 0:
                     break;

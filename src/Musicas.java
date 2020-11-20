@@ -20,7 +20,7 @@ public class Musicas {
         this.musicas = musicas;
     }
 
-    public void cadastrar(Musicas musicas) throws JAXBException, IOException {
+    public void cadastrar() throws JAXBException, IOException {
         Scanner S = new Scanner(System.in);
         String nome, artista, album, duracao, genero;
 
@@ -41,28 +41,59 @@ public class Musicas {
         genero = S.nextLine();
 
         Musica music = new Musica(nome, artista, album, duracao, genero);
-        int ultimoID = musicas.getMusicas().size();
+        int ultimoID = this.getMusicas().size();
         music.setId(ultimoID + 1);
 
-        musicas.getMusicas().add(music);
-        XML.salvar(musicas);
+        this.getMusicas().add(music);
+
+        this.ordenar();
+
+        XML.salvar(this);
 
         System.out.print("\nMúsica cadastrada!\nPressione uma tecla para continuar...");
         S.nextLine();
     }
 
-    public void listar(Musicas musicas){
+    private void ordenar() {
+        // Ordena por nome depois por artista
+        Collections.sort(this.getMusicas(), (A, B) -> {
+            String nome1 = A.getNome().toLowerCase();
+            String nome2 = B.getNome().toLowerCase();
+            int sComp = nome1.compareTo(nome2);
+
+            if(sComp != 0){
+                return sComp;
+            }
+
+            String artista1 = A.getArtista().toLowerCase();
+            String artista2 = B.getArtista().toLowerCase();
+
+            return artista1.compareTo(artista2);
+        });
+    }
+
+    public void listar(){
         Scanner S = new Scanner(System.in);
         System.out.println("\nMÚSICAS CADASTRADAS");
-        if(musicas.getMusicas().size() == 0){
+        if(this.getMusicas().size() == 0){
             System.out.println("Não existem músicas cadastradas!");
         } else {
-            for(Musica M: musicas.getMusicas()){
+            for(Musica M: this.getMusicas()){
                 System.out.printf("\nNome: %1$s\t- Artista: %2$s\t- Album: %3$s\t- Duracao: %4$s\t- Genero: %5$s",
                         M.getNome(), M.getArtista(), M.getAlbum(), M.getDuracao(), M.getGenero());
             }
         }
         System.out.print("\n\nPressione uma tecla para continuar...");
         S.nextLine();
+    }
+
+    public Musica buscar(String nome, String artista){
+        Musica mus = new Musica();
+        mus.setNome(nome);
+        mus.setArtista(artista);
+
+
+
+        return mus;
     }
 }
