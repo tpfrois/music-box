@@ -20,9 +20,11 @@ public class Musicas {
         this.musicas = musicas;
     }
 
-    public void cadastrar() throws JAXBException, IOException {
+    public void cadastrar() throws JAXBException {
         Scanner S = new Scanner(System.in);
-        String nome, artista, album, duracao, genero;
+
+        String nome, artista, album, genero;
+        int minutos, segundos;
 
         System.out.println("\nCadastro de Músicas\n");
         System.out.print("Nome: ");
@@ -34,18 +36,23 @@ public class Musicas {
         System.out.print("Álbum: ");
         album = S.nextLine();
 
-        System.out.print("Duração: ");
-        duracao = S.nextLine();
-
         System.out.print("Gênero: ");
         genero = S.nextLine();
 
-        Musica music = new Musica(nome, artista, album, duracao, genero);
+        System.out.println("DURAÇÃO");
+        System.out.print("Minutos: ");
+        minutos = S.nextInt();
+
+        System.out.print("Segundos: ");
+        segundos = S.nextInt();
+
+
+        Musica music = new Musica(nome, artista, album, genero, minutos, segundos);
+
         int ultimoID = this.getMusicas().size();
         music.setId(ultimoID + 1);
 
         this.getMusicas().add(music);
-
         this.ordenar();
 
         XML.salvar(this);

@@ -8,12 +8,12 @@ public class Main {
 
     public static Queue<Musica> filaMusicas = new LinkedList<>();
 
-    public static void main(String[] args) throws JAXBException, IOException {
-        Scanner leitor = new Scanner(System.in);
+    public static void main(String[] args) throws JAXBException, IOException, InterruptedException {
+        Scanner S = new Scanner(System.in);
 
         Musicas musicas = XML.carregar();
 
-        int opcao;
+        int opcao = -1;
         do{
             System.out.println("\n+===============================+");
             System.out.println("|             MUSIC BOX         |");
@@ -21,14 +21,22 @@ public class Main {
             System.out.println("|-------------TOCAR-------------|");
             System.out.println("| 1 - Adicionar música na fila  |");
             System.out.println("| 2 - Listar Fila de músicas    |");
+            System.out.println("| 3 - Tocar músicas da fila     |");
             System.out.println("|------------CADASTRO-----------|");
-            System.out.println("| 3 - Cadastrar música          |");
-            System.out.println("| 4 - Listar músicas cadastradas|");
+            System.out.println("| 4 - Cadastrar música          |");
+            System.out.println("| 5 - Listar músicas cadastradas|");
             System.out.println("|-------------------------------|");
             System.out.println("| 0 - Sair                      |");
             System.out.println("+===============================+");
-            System.out.print("Digite uma opção: ");
-            opcao = leitor.nextInt();
+
+            try {
+                System.out.print("Digite uma opção: ");
+                opcao = S.nextInt();
+            } catch(InputMismatchException inputMismatchException) {
+                System.err.println("A opção deve ser um número entre 0-5!\n");
+                S.nextLine();
+                continue;
+            }
 
             System.out.println();
 
@@ -40,15 +48,18 @@ public class Main {
                     listarFila();
                     break;
                 case 3:
-                    musicas.cadastrar();
+                    play(filaMusicas.poll());
                     break;
                 case 4:
+                    musicas.cadastrar();
+                    break;
+                case 5:
                     musicas.listar();
                     break;
                 case 0:
                     break;
                 default:
-                    System.out.println("\nOpção Inválida!\n");
+                    System.err.println("\nOpção Inválida!\n");
                     break;
             }
         } while(opcao != 0);
@@ -91,6 +102,35 @@ public class Main {
             }
             System.out.print("\nPressione uma tecla para continuar...");
             S.nextLine();
+        }
+    }
+
+    public static void play(Musica m) throws InterruptedException {
+        Scanner S = new Scanner(System.in);
+
+        if(m == null){
+            System.out.println("\nA fila está vazia! Adicione músicas para tocar.");
+            System.out.println("Pressione uma tecla para continuar...");
+            S.nextLine();
+            return;
+        }
+
+        int duracaoEmMS = (m.getMinutos() * 60 * 1000) + (m.getSegundos() * 1000);
+        int currentMS = 0;
+
+        while(currentMS <= duracaoEmMS){
+            int segundos = (int) ((currentMS / 1000) % 60);
+            int minutos = (int) ((currentMS / 1000) / 60);
+            System.out.printf("\rTocando %1$s - %2$s! %3$dm %4$ds/%5$dm %6$ds",
+                    m.getNome(), m.getArtista(), minutos, segundos, m.getMinutos(), m.getSegundos());
+            Thread.sleep(1000);
+            currentMS += 1000;
+        }
+
+        System.out.print("\n\nTocar próxima música? [S/N]: ");
+        char opcao = S.next().toUpperCase().charAt(0);
+        if(opcao == 'S'){
+            play(filaMusicas.poll());
         }
     }
 

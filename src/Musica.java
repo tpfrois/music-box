@@ -12,17 +12,21 @@ public class Musica {
     private String Artista;
     private String Album;
     private String Duracao;
+    private int Minutos;
+    private int Segundos;
     private String Genero;
 
     public Musica() {
     }
 
-    public Musica(String nome, String artista, String album, String duracao, String genero){
+    public Musica(String nome, String artista, String album, String genero, int minutos, int segundos){
         this.Nome = nome;
         this.Artista = artista;
         this.Album = album;
-        this.Duracao = duracao;
+        this.Minutos = minutos;
+        this.Segundos = segundos;
         this.Genero = genero;
+        this.Duracao = minutos + "m " + segundos + "s";
     }
 
     public long getId() { return this.ID; }
@@ -61,5 +65,19 @@ public class Musica {
     }
     public void setGenero(String genero) {
         this.Genero = genero;
+    }
+
+    public int getMinutos() {
+        return Minutos;
+    }
+    public void setMinutos(int minutos) {
+        this.Minutos = minutos;
+    }
+
+    public int getSegundos() {
+        return Segundos;
+    }
+    public void setSegundos(int segundos) {
+        this.Minutos = segundos;
     }
 }
