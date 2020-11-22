@@ -12,6 +12,7 @@ public class Main {
         Scanner S = new Scanner(System.in);
 
         Musicas musicas = XML.carregar();
+        musicas.setMusicas(musicas.getMusicas());
 
         int opcao = -1;
         do{
@@ -78,7 +79,7 @@ public class Main {
         Musica m = musicas.buscar(nome, artista);
 
         if(m.getNome() == null) {
-            System.out.println("\nMúsica não encontrada! Pressione uma tecla para continuar...");
+            System.err.println("\nMúsica não encontrada! Pressione uma tecla para continuar...");
             S.nextLine();
             return;
         } else {
@@ -93,7 +94,7 @@ public class Main {
     public static void listarFila(){
         Scanner S = new Scanner(System.in);
         if(filaMusicas.size() == 0){
-            System.out.print("\nA fila está vazia! Pressione uma tecla para continuar...");
+            System.err.print("\nA fila está vazia! Pressione uma tecla para continuar...");
             S.nextLine();
         } else {
             System.out.println("\nFILA DAS MÚSICAS À TOCAR:");
@@ -109,8 +110,8 @@ public class Main {
         Scanner S = new Scanner(System.in);
 
         if(m == null){
-            System.out.println("\nA fila está vazia! Adicione músicas para tocar.");
-            System.out.println("Pressione uma tecla para continuar...");
+            System.err.println("\nA fila está vazia! Adicione músicas para tocar.");
+            System.err.print("Pressione uma tecla para continuar...");
             S.nextLine();
             return;
         }

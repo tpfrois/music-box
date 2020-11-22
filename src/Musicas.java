@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType (XmlAccessType.FIELD)
 public class Musicas {
     @XmlElement(name = "musica")
-    private List<Musica> musicas = null;
+    public List<Musica> musicas = new ArrayList<>();
 
     public List<Musica> getMusicas() {
         return musicas;
